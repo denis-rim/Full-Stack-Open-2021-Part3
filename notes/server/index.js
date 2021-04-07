@@ -55,6 +55,30 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
+const generateId = () => {
+  return Math.floor(Math.random() * 100000000);
+};
+
+app.post("/api/persons", (req, res) => {
+  const { name, number } = req.body;
+
+  if (!name || !number) {
+    return res.status(400).json({
+      error: "name and number mus be provided",
+    });
+  }
+
+  const person = {
+    name: name,
+    number: number,
+    id: generateId(),
+  };
+
+  persons = persons.concat(person);
+
+  res.json(person);
+});
+
 const PORT = 3001;
 
 app.listen(PORT, () => {
