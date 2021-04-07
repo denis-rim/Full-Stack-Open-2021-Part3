@@ -62,9 +62,23 @@ const generateId = () => {
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
 
-  if (!name || !number) {
+  const existingPerson = persons.find((person) => person.name === name);
+
+  if (existingPerson) {
     return res.status(400).json({
-      error: "name and number mus be provided",
+      error: "name must be unique",
+    });
+  }
+
+  if (!name) {
+    return res.status(400).json({
+      error: "name must be provided",
+    });
+  }
+
+  if (!number) {
+    return res.status(400).json({
+      error: "number must be provided",
     });
   }
 
