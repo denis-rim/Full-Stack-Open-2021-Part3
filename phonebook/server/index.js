@@ -18,36 +18,6 @@ app.use(
   )
 );
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",
-    id: 1,
-  },
-  {
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-    id: 2,
-  },
-  {
-    name: "Dan Abramov",
-    number: "12-43-234345",
-    id: 3,
-  },
-  {
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-    id: 4,
-  },
-];
-
-app.get("/api/info", (req, res) => {
-  res.send(`
-   <p>Phonebook has info for ${persons.length} people</p>
-   <p>${new Date().toString()}</p>
-  `);
-});
-
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((persons) => {
     res.json(persons);
@@ -79,35 +49,18 @@ const generateId = () => {
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
 
-  const existingPerson = persons.find((person) => person.name === name);
-
-  if (existingPerson) {
-    return res.status(400).json({
-      error: "name must be unique",
-    });
+  if (!name || !number) {
+    return res.status(400).json({ error: "content missing" });
   }
 
-  if (!name) {
-    return res.status(400).json({
-      error: "name must be provided",
-    });
-  }
+  const person = new Person({
+    name,
+    number,
+  });
 
-  if (!number) {
-    return res.status(400).json({
-      error: "number must be provided",
-    });
-  }
-
-  const person = {
-    name: name,
-    number: number,
-    id: generateId(),
-  };
-
-  persons = persons.concat(person);
-
-  res.json(person);
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
