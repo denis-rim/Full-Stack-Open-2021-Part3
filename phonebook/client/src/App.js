@@ -35,7 +35,7 @@ const App = () => {
       })
       .catch((error) => {
         showMessage("Server is unavailable", "error");
-        console.error(error);
+        console.error(error.response.data);
       });
   }, []);
 
@@ -77,8 +77,8 @@ const App = () => {
           resetInput();
         })
         .catch((error) => {
-          showMessage("Failed to update person", "error");
-          console.error(error);
+          showMessage(`${error.response.data.error.message}`, "error");
+          console.log(error.response.data);
         });
       return;
     }
@@ -96,8 +96,8 @@ const App = () => {
         resetInput();
       })
       .catch((error) => {
-        showMessage("Failed to add person", "error");
         console.error(error);
+        showMessage(`${error.response.data.error.message}`, "error");
       });
   };
 
@@ -119,7 +119,7 @@ const App = () => {
           `Information of ${name} has already removed from server`,
           "error"
         );
-        console.error(error);
+        console.error(error.response.data);
       });
   };
 
