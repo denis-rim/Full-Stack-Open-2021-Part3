@@ -9,7 +9,7 @@ const password = process.argv[2];
 const name = process.argv[3];
 const number = process.argv[4];
 
-const url = `mongodb+srv://darktree:${password}@phonebook.4e0kr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const url = `mongodb+srv://darktree:${password}@phonebook.4e0kr.mongodb.net/phonebook?retryWrites=true&w=majority`;
 
 mongoose.connect(url, {
   useNewUrlParser: true,
